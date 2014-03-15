@@ -1,0 +1,41 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Editor</title>
+  <meta name="description" content="Editor">
+  <meta name="author" content="Exterminate.me">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+	<h2>Post list</h2>
+	<div><a href='markdowneditor.php'>New post</a></div>
+	<ul class='post-list'>
+		<li><a href='markdowneditor.php?show=1'>My First Post</a> :: <a href='markdowneditoraction.php?publish=1'>[Publish]</a> :: <a href='markdowneditoraction.php?delete=1' id='delete_link'>[Delete]</a></li><li><a href='markdowneditor.php?show=2'>post 2</a> :: <a href='markdowneditoraction.php?publish=2'>[Unpublish]</a> :: <a href='markdowneditoraction.php?delete=2' id='delete_link'>[Delete]</a></li>	</ul>
+<a href='#' id='test'> link</a>
+<script>
+
+var Anchors = document.getElementById("test");
+
+for (var i = 0; i < Anchors.length ; i++) {
+    Anchors[i].addEventListener("click", 
+        function (event) {
+            event.preventDefault();
+            if (confirm('Are you sure?')) {
+                window.location = this.href;
+            }
+        }, 
+        false);
+}
+</script>
+</body>
+</html>
