@@ -45,4 +45,6 @@ if(isset($_GET['delete']) && is_numeric($_GET['delete']))
 	header('Location: editor.php');
 	exit;
 }
+
+$db->close();
 ?>

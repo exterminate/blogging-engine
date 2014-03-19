@@ -35,7 +35,9 @@ if(isset($_GET['publish']))
 			$posts->show_page_list();
 		?>
 	</ul>
-<a href='#' id='test'> link</a>
+
+<?php $db->close(); ?>
+			
 <script>
 
 var element = document.getElementsByClassName('delete_link');

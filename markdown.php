@@ -79,11 +79,10 @@ function convert($string)
 	$before = array("</ul><ul>","</ol><ol>","</ul>","</ol>","<ul>","<ol>");
 	$after = array("\n","\n","\n</ul>\n","\n</ol>\n","<ul>\n","<ol>\n");
 	$string = str_replace($before, $after, $string);
-	//$string = str_replace("</ol><ol>","\n",$string);
 	return $string;
 }
 
-//echo convert($string);
+
 
 function protect($string)
 {
@@ -103,25 +102,6 @@ class MyDB extends SQLite3
 	}
 }
 
-$db = new MyDB();
-$db->exec('CREATE TABLE if not exists post 
-	(id INTEGER PRIMARY KEY AUTOINCREMENT,
-	time TEXT NOT NULL,
-	publish TEXT NOT NULL,
-	tags TEXT,
-	title TEXT NOT NULL,
-	content TEXT NOT NULL)');
-$db->exec('CREATE TABLE if not exists user 
-	(userID INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT NOT NULL,
-	email TEXT NOT NULL,
-	password TEXT NOT NULL,
-	lastlogin TEXT NOT NULL,
-	logins TEXT NOT NULL)');
-
-/*$db->exec('INSERT INTO post (time, publish, tags, title, content) VALUES
-	("$time", "no", "editorial", "My First Post", "This is a the content in my first post")');
-*/
 
 
 class Page
@@ -181,6 +161,9 @@ class Page
 	{
 		$time = strtotime("now");
 		$this->db->exec("UPDATE post SET title = '$title', content = '$content', time = '$time' WHERE id='$id'");
+		//$this->db->close();
+		//unset($this->db);
+		//$this->db->busyTimeout(5000);
 	}
 	
 	function save($title,$content)
@@ -199,9 +182,36 @@ class Page
 		$all = $this->db->query("SELECT * FROM post WHERE publish = 'yes'");
 		while ($row = $all->fetchArray())
 		{
-			return "<article><h1 class='title'>".$row['title']."</h1>".convert($row['content'])."<p class='date'></p>".date("Y-m-d H:i", $row['time'])."</article>";
+			echo "<article><h1 class='title'><a href='?p=".$row['id']."'>".$row['title']."</a></h1>".convert($row['content'])."<p class='date'>".date("Y-m-d H:i", $row['time'])."</p></article>";
 		}	
 	}
-//$list = $this->db->query("SELECT count(metaID) as count FROM meta WHERE metaID='0'");   
+	
+	function show_one($p)
+		{
+			$all = $this->db->query("SELECT * FROM post WHERE publish = 'yes' AND id='$p'");
+			while ($row = $all->fetchArray())
+			{
+				echo "<article><h1 class='title'>".$row['title']."</h1>".convert($row['content'])."<p class='date'>".date("Y-m-d H:i", $row['time'])."</p></article>";
+			}	
+		}
+  
+}
+
+class User
+{
+	function __construct($db, $user, $email, $pass)
+	{
+		$this->db    = $db;
+		$this->user  = $user;
+		$this->email = $email;
+		$this->pass  = $pass;
+	}
+
+	function add_user_to_database()
+	{
+		$time = strtotime("now");
+		$this->db->exec("INSERT INTO user (name,email,password,lastlogin,logins) VALUES('$this->user','$this->email','$this->pass','$time','1')");
+	}
+	
 }
 ?>

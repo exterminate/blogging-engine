@@ -31,13 +31,14 @@
 		<textarea name='content'><?php
 			if (isset($_GET['show']) && is_numeric($_GET['show']))
 			{
-				//$edit_page = new Page($db);
 				echo $edit_page->show_content($_GET['show']);
 			}
 		?></textarea>
 		<button>Save</button>
 	</form>
-
+<?php
+$db->close();
+?>
 <script src="js/scripts.js"></script>
 </body>
 </html>
